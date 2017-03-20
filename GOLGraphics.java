@@ -28,7 +28,7 @@ public class GOLGraphics {
       });    
       headerLabel = new JLabel("AAAAAAAAAAAAAAAA", JLabel.CENTER);        
       statusLabel = new JLabel("BBBBBB",JLabel.CENTER);    
-      statusLabel.setSize(350,100);
+      statusLabel.setSize(1500,800);
       msglabel = new JLabel("Welcome to TutorialsPoint SWING Tutorial.", JLabel.CENTER);
       controlPanel = new JPanel();
       controlPanel.setLayout(new FlowLayout());
