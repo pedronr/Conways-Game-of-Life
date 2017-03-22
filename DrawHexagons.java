@@ -22,8 +22,8 @@ public class DrawHexagons extends JPanel {
         g2d.setFont(font);
         metrics = g.getFontMetrics();
 
-        drawCircle(g2d, origin, 380, true, true, 0x4488FF, 0);
-        drawHexGridLoop(g2d, origin, 40, 10, 0);
+        drawCircle(g2d, origin, 400, true, true, 0x4488FF, 0);
+        drawHexGridLoop(g2d, origin, 45, 10, 0);
     }
 
     private void drawHexGridLoop(Graphics g, Point origin, int size, int radius, int padding) {
