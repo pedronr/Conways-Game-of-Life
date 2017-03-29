@@ -10,7 +10,7 @@ public class Hexagon extends Polygon {
     private Point center = new Point(0, 0);
     private int radius;
     private int rotation = 90;
-
+    private boolean on = false;
     public Hexagon(Point center, int radius) {
         npoints = SIDES;
         xpoints = new int[SIDES];
@@ -21,7 +21,12 @@ public class Hexagon extends Polygon {
 
         updatePoints();
     }
-
+    public boolean isOn() {
+    	return on;
+    }
+    public void toggle() {
+    	this.on=!this.on;
+    }
     public Hexagon(int x, int y, int radius) {
         this(new Point(x, y), radius);
     }
