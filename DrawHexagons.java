@@ -1,18 +1,29 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
 
 public class DrawHexagons extends JPanel {
     private static final long serialVersionUID = 1L;
     private final int WIDTH = 1500;
     private final int HEIGHT = 800;
-
+    private int size = 10;
+    private int radius = 40;
+    private Hexagon[][] hexGrid = new Hexagon[size][size];
     private Font font = new Font("Arial", Font.BOLD, 18);
     FontMetrics metrics;
-
+    
     public DrawHexagons() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
     }
-
+    public int Size(){
+    	return size;
+    }
+    public int Radius(){
+    	return radius;
+    }
+    public Hexagon[][] HexGrid(){
+    	return hexGrid;
+    }
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -22,8 +33,8 @@ public class DrawHexagons extends JPanel {
         g2d.setFont(font);
         metrics = g.getFontMetrics();
 
-        drawCircle(g2d, origin, 400, true, true, 0x4488FF, 0);
-        drawHexGridLoop(g2d, origin, 45, 10, 0);
+        //drawCircle(g2d, origin, 400, true, true, 0x4488FF, 0);
+        drawHexGridLoop(g2d, origin, size, 40, 0);
     }
 
     private void drawHexGridLoop(Graphics g, Point origin, int size, int radius, int padding) {
@@ -42,6 +53,8 @@ public class DrawHexagons extends JPanel {
                 int y = (int) (origin.y + yOff * (row - half) * 3);
 
                 drawHex(g, xLbl, yLbl, x, y, radius);
+                Hexagon hex = new Hexagon(x,y,radius);
+                hexGrid[x+5][y+5] = hex;
             }
         }
     }
@@ -50,15 +63,17 @@ public class DrawHexagons extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         Hexagon hex = new Hexagon(x, y, r);
-        //String text = String.format("%s : %s", coord(posX), coord(posY));
-        //int w = metrics.stringWidth(text);
-        //int h = metrics.getHeight();
+        int xVal = Integer.parseInt(coord(posX))+5;
+        int yVal = Integer.parseInt(coord(posY))+5;
+        String text = String.format("%s : %s", xVal, yVal);
+        int w = metrics.stringWidth(text);
+        int h = metrics.getHeight();
 
-        hex.draw(g2d, x, y, 0, 0x008844, true);
-        hex.draw(g2d, x, y, 4, 0xFFDD88, false);
+        hex.draw(g2d, x, y, 0, 0xFFFFFF, true);
+        hex.draw(g2d, x, y, 1, 0x000000, false);
 
-        //g.setColor(new Color(0xFFFFFF));
-        //g.drawString(text, x - w/2, y + h/2);
+        g.setColor(new Color(0x000000));
+        g.drawString(text, x - w/2, y + h/2);
     }
 
     private String coord(int value) {
