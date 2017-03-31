@@ -10,7 +10,8 @@ public class Hexagon extends Polygon {
     private Point center = new Point(0, 0);
     private int radius;
     private int rotation = 90;
-    private boolean on = false;
+
+    private boolean on = false; //on = yellow, off = white
     public Hexagon(Point center, int radius) {
         npoints = SIDES;
         xpoints = new int[SIDES];
@@ -50,7 +51,9 @@ public class Hexagon extends Polygon {
 
         updatePoints();
     }
-
+    public Point getCenter() {
+    	return center;
+    }
     public void setCenter(Point center) {
         this.center = center;
 
@@ -81,7 +84,18 @@ public class Hexagon extends Polygon {
             points[p] = point;
         }
     }
-
+    public void changeColor(Graphics2D g, int lineThickness) {
+    	int x = (int)center.getX();
+    	int y = (int)center.getY();
+    	if(on) {
+    		//change from yellow to white
+    		draw(g,x,y,lineThickness,0x000000,true);
+    	}
+    	else if(on) {
+    		//change from white to yellow
+    		draw(g,x,y,lineThickness,0xD1F442,false);
+    	}
+    }
     public void draw(Graphics2D g, int x, int y, int lineThickness, int colorValue, boolean filled) {
         // Store before changing.
         Stroke tmpS = g.getStroke();
