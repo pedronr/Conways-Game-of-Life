@@ -7,11 +7,6 @@ import javax.swing.JFrame;
 public class Main{
 	
 	public static void main(String[] args) {
-		createGrid();
-	}
-	
-	
-	static void createGrid() {
 		JFrame f = new JFrame();
         DrawHexagons p = new DrawHexagons();
         f.setContentPane(p);
@@ -19,10 +14,17 @@ public class Main{
         f.pack();
         f.setLocationRelativeTo(null);
         f.setVisible(true);
+        
+        Hexagon[][] grid = p.HexGrid();
+        for(int i = 0; i < grid.length; i++) {
+        	for(int j = 0; j < grid[0].length; j++) {
+        		System.out.println("("+p.HexGrid()[i][j].getCenter().getX()+", "+
+        	p.HexGrid()[i][j].getCenter().getY()+")");
+        	}
+        }
+        //grid[5][0].changeColor((Graphics2D)f.getGraphics(), 0);
 	}
-	static void pressButton() {
-		
-	}
+
 	static void iterate(DrawHexagons p) {
 		int size = p.Size();
 		int half = size / 2;
