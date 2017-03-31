@@ -8,7 +8,7 @@ public class DrawHexagons extends JPanel {
     private final int HEIGHT = 800;
     private int size = 10;
     private int radius = 40;
-    private Hexagon[][] hexGrid = new Hexagon[size][size];
+    public Hexagon[][] hexGrid = new Hexagon[size][size];
     private Font font = new Font("Arial", Font.BOLD, 18);
     FontMetrics metrics;
     
@@ -36,7 +36,7 @@ public class DrawHexagons extends JPanel {
         //drawCircle(g2d, origin, 400, true, true, 0x4488FF, 0);
         drawHexGridLoop(g2d, origin, size, 40, 0);
     }
-
+    
     private void drawHexGridLoop(Graphics g, Point origin, int size, int radius, int padding) {
         double ang30 = Math.toRadians(30);
         double xOff = Math.cos(ang30) * (radius + padding);
@@ -53,8 +53,8 @@ public class DrawHexagons extends JPanel {
                 int y = (int) (origin.y + yOff * (row - half) * 3);
 
                 drawHex(g, xLbl, yLbl, x, y, radius);
-                Hexagon hex = new Hexagon(x,y,radius);
-                hexGrid[x+5][y+5] = hex;
+                hexGrid[xLbl+5][yLbl+5] = new Hexagon(x,y,radius);
+                System.out.println(hexGrid[xLbl+5][yLbl+5].getCenter().getX());
             }
         }
     }
@@ -63,6 +63,7 @@ public class DrawHexagons extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         Hexagon hex = new Hexagon(x, y, r);
+        
         int xVal = Integer.parseInt(coord(posX))+5;
         int yVal = Integer.parseInt(coord(posY))+5;
         String text = String.format("%s : %s", xVal, yVal);
@@ -103,8 +104,9 @@ public class DrawHexagons extends JPanel {
         g.setColor(tmpC);
         g.setStroke(tmpS);
     }
+    
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
         JFrame f = new JFrame();
         DrawHexagons p = new DrawHexagons();
         
@@ -113,5 +115,14 @@ public class DrawHexagons extends JPanel {
         f.pack();
         f.setLocationRelativeTo(null);
         f.setVisible(true);
+        //System.out.println(p.HexGrid().length);
+        //System.out.println(p.HexGrid()[0].length);
+        for(int i = 0; i < p.HexGrid().length; i++) {
+        	for(int j = 0; j < p.HexGrid()[0].length; j++) {
+        	//	System.out.println("("+p.HexGrid()[i][j].getCenter().getX()+", "+
+        	//p.HexGrid()[i][j].getCenter().getY()+")");
+        		
+        	}
+        }
     }
 }
