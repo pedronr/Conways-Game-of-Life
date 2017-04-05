@@ -1,17 +1,20 @@
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
 
 public class DrawHexagons extends JPanel {
     private static final long serialVersionUID = 1L;
-    private final int WIDTH = 1500;
-    private final int HEIGHT = 800;
+    public static final int WIDTH = 1500;
+    public static final int HEIGHT = 800;
     private int size = 10;
     private int radius = 40;
-    public Hexagon[][] hexGrid = new Hexagon[size][size];
     private Font font = new Font("Arial", Font.BOLD, 18);
     FontMetrics metrics;
-    
+    public int getWidth() {
+    	return WIDTH;
+    }
+    public int getHeight() {
+    	return HEIGHT;
+    }
     public DrawHexagons() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
     }
@@ -21,9 +24,7 @@ public class DrawHexagons extends JPanel {
     public int Radius(){
     	return radius;
     }
-    public Hexagon[][] HexGrid(){
-    	return hexGrid;
-    }
+
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -36,7 +37,35 @@ public class DrawHexagons extends JPanel {
         //drawCircle(g2d, origin, 400, true, true, 0x4488FF, 0);
         drawHexGridLoop(g2d, origin, size, 40, 0);
     }
-    
+
+	public Hexagon[][] makeHexGrid(Point origin,int size, int radius, int padding){
+    	Hexagon[][] hexGrid = new Hexagon[size][size];
+    	double ang30 = Math.toRadians(30);
+        double xOff = Math.cos(ang30) * (radius + padding);
+        double yOff = Math.sin(ang30) * (radius + padding);
+        int half = size / 2;
+
+        for (int row = 0; row < size; row++) {
+            int cols = size - java.lang.Math.abs(row - half);
+
+            for (int col = 0; col < cols; col++) {
+                int xLbl = row < half ? col - row : col - half;
+                int yLbl = row - half;
+                int x = (int) (origin.x + xOff * (col * 2 + 1 - cols));
+                int y = (int) (origin.y + yOff * (row - half) * 3);
+                hexGrid[xLbl+5][yLbl+5] = new Hexagon(x,y,radius);
+                //System.out.println(hexGrid[xLbl+5][yLbl+5].getCenter().getX());
+            }
+        }
+        for(int i = 0; i < size; i++) {
+        	for(int j = 0; j < size; j++) {
+        		if(hexGrid[i][j]==null) {
+        			hexGrid[i][j]=new Hexagon(new Point(0,0),radius);
+        		}
+        	}
+        }
+        return hexGrid;
+    }
     private void drawHexGridLoop(Graphics g, Point origin, int size, int radius, int padding) {
         double ang30 = Math.toRadians(30);
         double xOff = Math.cos(ang30) * (radius + padding);
@@ -53,8 +82,7 @@ public class DrawHexagons extends JPanel {
                 int y = (int) (origin.y + yOff * (row - half) * 3);
 
                 drawHex(g, xLbl, yLbl, x, y, radius);
-                hexGrid[xLbl+5][yLbl+5] = new Hexagon(x,y,radius);
-                System.out.println(hexGrid[xLbl+5][yLbl+5].getCenter().getX());
+                //System.out.println(hexGrid[xLbl+5][yLbl+5].getCenter().getX());
             }
         }
     }
@@ -115,12 +143,14 @@ public class DrawHexagons extends JPanel {
         f.pack();
         f.setLocationRelativeTo(null);
         f.setVisible(true);
+        Point origin = new Point(WIDTH / 2, HEIGHT / 2);
+        Hexagon[][] grid = p.makeHexGrid(origin, 10, 40, 0);
         //System.out.println(p.HexGrid().length);
         //System.out.println(p.HexGrid()[0].length);
-        for(int i = 0; i < p.HexGrid().length; i++) {
-        	for(int j = 0; j < p.HexGrid()[0].length; j++) {
-        	//	System.out.println("("+p.HexGrid()[i][j].getCenter().getX()+", "+
-        	//p.HexGrid()[i][j].getCenter().getY()+")");
+        for(int i = 0; i < grid.length; i++) {
+        	for(int j = 0; j < grid[0].length; j++) {
+        		System.out.println("("+grid[i][j].getCenter().getX()+", "+
+        	grid[i][j].getCenter().getY()+")");
         		
         	}
         }
