@@ -1,6 +1,6 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
+import java.awt.Point;
 
 import javax.swing.JFrame;
 
@@ -14,13 +14,15 @@ public class Main{
         f.pack();
         f.setLocationRelativeTo(null);
         f.setVisible(true);
+        Point origin = new Point(p.getWidth(),p.getHeight());
+        Hexagon[][] grid = p.makeHexGrid(origin, 10, 40, 0);
         
-        Hexagon[][] grid = p.HexGrid();
         for(int i = 0; i < grid.length; i++) {
         	for(int j = 0; j < grid[0].length; j++) {
-        		System.out.println("("+p.HexGrid()[i][j].getCenter().getX()+", "+
-        	p.HexGrid()[i][j].getCenter().getY()+")");
+        		System.out.print("("+grid[i][j].getCenter().getX()+", "+
+        	grid[i][j].getCenter().getY()+")");
         	}
+        	System.out.println();
         }
         //grid[5][0].changeColor((Graphics2D)f.getGraphics(), 0);
 	}
@@ -29,7 +31,8 @@ public class Main{
 		int size = p.Size();
 		int half = size / 2;
 		boolean[][] newTurnedOn = new boolean[size][size];
-		Hexagon[][] hexGrid = p.HexGrid();
+		Point origin = new Point(p.getWidth(),p.getHeight());
+        Hexagon[][] hexGrid = p.makeHexGrid(origin, 10, 40, 0);
 		for(int row = 0; row < 9; row++) {
 			int cols = size - java.lang.Math.abs(row - half);
 			for(int col = 0; col < cols; col++) {
