@@ -84,18 +84,7 @@ public class Hexagon extends Polygon {
             points[p] = point;
         }
     }
-    public void changeColor(Graphics2D g, int lineThickness) {
-    	int x = (int)center.getX();
-    	int y = (int)center.getY();
-    	if(on) {
-    		//change from yellow to white
-    		draw(g,x,y,lineThickness,0x000000,true);
-    	}
-    	else if(on) {
-    		//change from white to yellow
-    		draw(g,x,y,lineThickness,0xD1F442,false);
-    	}
-    }
+
     public void draw(Graphics2D g, int x, int y, int lineThickness, int colorValue, boolean filled) {
         // Store before changing.
         Stroke tmpS = g.getStroke();
