@@ -1,30 +1,42 @@
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
-public class HexButtons {
-	private JFrame frame;
-	private Buttons button;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.*;
+
+public class Buttons extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static JFrame f;
 	private JPanel panel;
+	private Hexagon hex;
+	private Color thisColor;
 	
-	public HexButtons() {
-		frame = new JFrame();
+	public Buttons() {
+		setOpaque(true);
 		panel = new JPanel();
-		panel.setBounds(0,0,4000,5000);
-		panel.setBackground(Color.white);
-		frame.setContentPane(panel);
-		button = new Buttons();
-		button.setColoring(Color.black);
-		button.addMouseListener(new MouseListener() {
+		thisColor = new Color(0,0,0);
+		Point origin = new Point(50,50);
+		hex = new Hexagon(origin,40);
+		setPreferredSize(new Dimension(100, 100));
+		add(panel);
+		
+		addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (button.getColoring().equals(Color.black)) {
-					button.setColoring(Color.green);
-					frame.repaint();
+				if (thisColor.equals(Color.black) && hex.contains(e.getPoint())) {
+					thisColor = Color.white;
+					f.repaint();
 				}
-				else if (button.getColoring().equals(Color.green)) {
-					button.setColoring(Color.black);
-					frame.repaint();
+				else if (thisColor.equals(Color.white) && hex.contains(e.getPoint())) {
+					thisColor = Color.black;
+					f.repaint();
 				}
 			}
 
@@ -52,15 +64,32 @@ public class HexButtons {
 				
 			}
 		});
-		frame.setTitle("This is a thing");
-//		frame.getContentPane().add(button);
-		panel.add(button);
-		button.revalidate();
-		
-		frame.pack();
-		frame.setSize(400,500);
-		frame.setLayout(null);
-		frame.setVisible(true);
 	}
-
+	
+	public void setColoring(Color choice) {
+		thisColor = choice;
+	}
+	
+	public Color getColoring() {
+		return thisColor;
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(thisColor);
+		g2.fill(hex);
+	}
+	
+	public static void main(String[] args) {
+		f = new JFrame();
+        f.setSize(500, 500);
+        f.setTitle("A hexagonal button");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setContentPane(new Buttons());
+        f.setVisible(true);
+    }
+    
 }
+
