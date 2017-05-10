@@ -1,0 +1,148 @@
+import javax.swing.*;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.*;
+
+public class Buttons extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static JFrame f;
+	private JPanel panel;
+	private Hexagon hex;
+	private Color thisColor;
+	
+	public Buttons() {
+		setOpaque(true);
+		panel = new JPanel();
+		thisColor = new Color(0,0,0);
+		Point origin = new Point(50,50);
+		hex = new Hexagon(origin,30);
+		setPreferredSize(new Dimension(100, 100));
+		add(panel);
+		
+		addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				hex.toggle();
+				f.repaint();
+				System.out.println("hex clicked");
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	public Buttons(Hexagon h) {
+		setOpaque(true);
+		panel = new JPanel();
+		thisColor = new Color(0,0,0);
+		hex = h;
+		setPreferredSize(new Dimension(100, 100));
+		add(panel);
+		
+		addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				hex.toggle();
+				f.repaint();
+				System.out.println("hex clicked");
+				if (thisColor.equals(Color.black) && hex.contains(e.getPoint())) {
+					thisColor = Color.black;
+					f.repaint();
+				}
+				else if (thisColor.equals(Color.white) && hex.contains(e.getPoint())) {
+					thisColor = Color.black;
+					f.repaint();
+				}
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	public Hexagon getHex() {
+		return hex;
+	}
+	public void setHex(Hexagon h) {
+		hex=h;
+	}
+	public void setColoring(Color choice) {
+		thisColor = choice;
+	}
+	
+	public Color getColoring() {
+		return thisColor;
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		DrawHexagons p = new DrawHexagons();
+		Buttons[][] hexGrid = p.getHexGrid();
+		super.paintComponent(g);
+		Point origin = new Point(WIDTH / 2, HEIGHT / 2);
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(thisColor);
+		g2d.fill(hex);
+		//p.paintComponent(g);
+		//p.drawHexGridLoop(hexGrid,g2d, origin, 15, 30, 0);
+	}
+	
+	public static void main(String[] args) {
+		f = new JFrame();
+        f.setSize(500, 500);
+        f.setTitle("A hexagonal button");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setContentPane(new Buttons());
+        f.setVisible(true);
+    }
+    
+}
