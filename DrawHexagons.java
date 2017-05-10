@@ -7,10 +7,10 @@ public class DrawHexagons extends JPanel {
     public static final int HEIGHT = 800;
     private int size = 15;
     private int radius = 30;
-    private Hexagon[][] hexGrid = new Hexagon[size][size]; //FIRST ENTRY X POS, SECOND ENTRY Y POS
+    private Buttons[][] hexGrid = new Buttons[size][size]; //FIRST ENTRY X POS, SECOND ENTRY Y POS
     private Font font = new Font("Arial", Font.BOLD, 18);
     FontMetrics metrics;
-    public Hexagon[][] getHexGrid() {
+    public Buttons[][] getHexGrid() {
     	return hexGrid;
     }
     public int getWidth() {
@@ -57,20 +57,20 @@ public class DrawHexagons extends JPanel {
                 int yLbl = row - half;
                 int x = (int) (origin.x + xOff * (col * 2 + 1 - cols));
                 int y = (int) (origin.y + yOff * (row - half) * 3);
-                hexGrid[xLbl+half][yLbl+half] = new Hexagon(x,y,radius);
+                hexGrid[xLbl+half][yLbl+half] = new Buttons(new Hexagon(x,y,radius));
                 //System.out.println(hexGrid[xLbl+5][yLbl+5].getCenter().getX());
             }
         }
         for(int i = 0; i < size; i++) {
         	for(int j = 0; j < size; j++) {
         		if(hexGrid[i][j]==null) {
-        			hexGrid[i][j]=new Hexagon(new Point(0,0),radius);
+        			hexGrid[i][j] = new Buttons((new Hexagon(new Point(0,0),radius)));
         		}
         	}
         }
         //hexGrid[5][5].toggle();
     }
-    private void drawHexGridLoop(Hexagon[][] hexGrid,Graphics g, Point origin, int size, int radius, int padding) {
+    private void drawHexGridLoop(Buttons[][] hexGrid,Graphics g, Point origin, int size, int radius, int padding) {
         double ang30 = Math.toRadians(30);
         double xOff = Math.cos(ang30) * (radius + padding);
         double yOff = Math.sin(ang30) * (radius + padding);
@@ -93,29 +93,29 @@ public class DrawHexagons extends JPanel {
         }
     }
 
-    private void drawHex(Hexagon hexagon,Graphics g, int posX, int posY, int x, int y, int r) {
+    private void drawHex(Buttons hexagon,Graphics g, int posX, int posY, int x, int y, int r) {
         Graphics2D g2d = (Graphics2D) g;
-        hexagon.setCenter(x,y);
-        hexagon.setRadius(r);
+        hexagon.getHex().setCenter(x,y);
+        hexagon.getHex().setRadius(r);
         int xVal = Integer.parseInt(coord(posX))+size/2;
         int yVal = Integer.parseInt(coord(posY))+size/2;
         String text = String.format("%s : %s", xVal, yVal);
         int w = metrics.stringWidth(text);
         int h = metrics.getHeight();
         //hexagon.toggle();
-        if(!hexagon.isOn()) {
+        if(!hexagon.getHex().isOn()) {
         	//System.out.println("A hexagon is on");
     		//change from yellow to white
-    		hexagon.draw(g2d,x,y,0,0xFFFFFF,true);
+    		hexagon.getHex().draw(g2d,x,y,0,0xFFFFFF,true);
     		//System.out.println("hexagon drawn ")
     	}
-        else if(hexagon.isOn()) {
+        else if(hexagon.getHex().isOn()) {
     		//change from white to yellow
-    		hexagon.draw(g2d,x,y,0,0x0FFC00,true);
+    		hexagon.getHex().draw(g2d,x,y,0,0x0FFC00,true);
     		//System.out.println("A hexagon is on");
     	}
 
-        hexagon.draw(g2d, x, y, 1, 0x000000, false);
+        hexagon.getHex().draw(g2d, x, y, 1, 0x000000, false);
 
         g.setColor(new Color(0x000000));
         g.drawString(text, x - w/2, y + h/2);
@@ -161,13 +161,13 @@ public class DrawHexagons extends JPanel {
         f.setVisible(true);
         Point origin = new Point(WIDTH / 2, HEIGHT / 2);
         p.makeHexGrid(origin, p.Size(), 40, 0);
-        Hexagon[][] grid = p.getHexGrid();
+        Buttons[][] grid = p.getHexGrid();
         //System.out.println(p.HexGrid().length);
         //System.out.println(p.HexGrid()[0].length);
         for(int i = 0; i < grid.length; i++) {
         	for(int j = 0; j < grid[0].length; j++) {
-        		System.out.println("("+grid[i][j].getCenter().getX()+", "+
-        	grid[i][j].getCenter().getY()+")");
+        		System.out.println("("+grid[i][j].getHex().getCenter().getX()+", "+
+        	grid[i][j].getHex().getCenter().getY()+")");
         		
         	}
         }
