@@ -11,10 +11,11 @@ import javax.swing.*;
 public class RealDrawing extends JPanel{
 	
 	private static int size = 15;
-    private int radius = 30;
+    private static int radius = 30;
 	private Buttons[][] hexGrid = new Buttons[size][size]; //FIRST ENTRY X POS, SECOND ENTRY Y POS
 	private static int i;
 	private static int j;
+//	private static Buttons button1;
 	
 	public RealDrawing(){
 		makeHexGrid(new Point(500,500), size, radius, 0);
@@ -105,7 +106,7 @@ public class RealDrawing extends JPanel{
     		public void mouseClicked(MouseEvent e) {
     			if (button1.getHex().contains(e.getPoint())) {
     				button1.toggle();
-    				System.out.println("Button is clicked");
+    				System.out.println("Button is clicked at " + button1.getBounds());
     				f.repaint();
     			}
     		}
@@ -139,51 +140,52 @@ public class RealDrawing extends JPanel{
 	}
 	
 	public static void main(String[] args) {
+	/*	Buttons[][] grid = new Buttons[size][size];
+		double ang30 = Math.toRadians(30);
+        double xOff = Math.cos(ang30) * (radius + 0);
+        double yOff = Math.sin(ang30) * (radius + 0);
+        int half = size / 2;
+        Point origin = new Point(300,300);
+
+        for (int row = 0; row < size; row++) {
+            int cols = size - java.lang.Math.abs(row - half);
+
+            for (int col = 0; col < cols; col++) {
+                int xLbl = row < half ? col - row : col - half;
+                int yLbl = row - half;
+                int x = (int) (origin.x + xOff * (col * 2 + 1 - cols));
+                int y = (int) (origin.y + yOff * (row - half) * 3);
+                grid[xLbl+half][yLbl+half] = new Buttons(new Hexagon(x,y,radius));
+                //System.out.println(hexGrid[xLbl+5][yLbl+5].getCenter().getX());
+            }
+        }*/
+		
+		Buttons[][] grid = {{new Buttons(120,120,50),new Buttons(50,50,50)},{new Buttons(190,190,50),new Buttons(260,260,50)}};
 		JFrame f = new JFrame();
 		f.setPreferredSize(new Dimension(1500,1000));
-		RealDrawing hexes = new RealDrawing();
-		f.add(hexes);
-        Buttons[][] grid = hexes.getGrid();
+	//	RealDrawing hexes = new RealDrawing();
+		
+		for (int eye = 0; eye < 2; eye++) {
+			for (int jay = 0; jay < 2; jay++) {
+				if(grid[eye][jay] != null) {
+					f.add(grid[eye][jay]);
+					System.out.println(grid[eye][jay].getBounds());
+				}
+			}
+		}
+		f.add(new Buttons(100,100,50));
+		f.revalidate();
+		f.repaint();
+	//	f.add(new Buttons(500,500,70));
+	//	f.add(hexes);
         Buttons button1 = null;
        
-        for (i = 0; i < size; i++) {
-            for (j = 0; j < size; j++) {
+        for (i = 0; i < 2; i++) {
+            for (j = 0; j < 2; j++) {
             	button1 = grid[i][j];
-	        	addListener(button1,f);
-          /*  	button1.addMouseListener(new MouseListener() {
-        			@Override
-            		public void mouseClicked(MouseEvent e) {
-            			if (button1.getHex().contains(e.getPoint())) {
-            				button1.toggle();
-            				System.out.println("Button is clicked");
-            				f.repaint();
-            			}
-            		}
-
-           			@Override
-           			public void mousePressed(MouseEvent e) {
-           				// TODO Auto-generated method stub
-           				
-           			}
-
-            		@Override
-            		public void mouseReleased(MouseEvent e) {
-            			// TODO Auto-generated method stub
-            			
-            		}
-
-            		@Override
-            		public void mouseEntered(MouseEvent e) {
-            			// TODO Auto-generated method stub
-            			
-            		}
-
-            		@Override
-            		public void mouseExited(MouseEvent e) {
-            			// TODO Auto-generated method stub
-            			
-            		}
-        		});*/
+            	if (button1 != null) {
+		        	addListener(button1,f);
+            	}
             }
         }
         
