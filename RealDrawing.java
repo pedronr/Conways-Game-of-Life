@@ -5,18 +5,21 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.swing.*;
 
 
 public class RealDrawing extends JPanel{
 	
-	private static int size = 30;
+	private static int size = 50;
     private static int radius = 10;
 	private Buttons[][] hexGrid = new Buttons[size][size]; //FIRST ENTRY X POS, SECOND ENTRY Y POS
 	private static int i;
 	private static int j;
-	public static Boolean going;
-	public static Boolean first;
+	public static AtomicBoolean going;
+	public static AtomicBoolean first;
+	private static Looper looper;
 //	private static Buttons button1;
 	
 	public RealDrawing(){
@@ -154,7 +157,7 @@ public class RealDrawing extends JPanel{
         f.setSize(1500,1500);   
         p.setLayout(null);
         p.setSize(500,500);
-//        p.setBackground(Color.blue);
+        p.setBackground(new Color(0x006606));
          f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Point origin = new Point((int)f.getSize().getHeight()/2,(int)f.getSize().getWidth()/3);
@@ -179,6 +182,8 @@ public class RealDrawing extends JPanel{
 //        f.add(grid[9][9]);
 //        f.add(grid[8][8]);
 //        f.add(grid[8][9]);
+        
+        
           JButton nextButton = new JButton();
           nextButton.setBounds((int)origin.getX() - 70, maxY + 30, 40, 20);
           nextButton.setText("Next");
@@ -195,8 +200,8 @@ public class RealDrawing extends JPanel{
           f.add(startButton);
           f.add(endButton);
           
-          going = false;
-          first = true;
+          going = new AtomicBoolean(false);
+          first = new AtomicBoolean(true);
           
           f.setLocationRelativeTo(null);
           f.setVisible(true);
@@ -266,8 +271,13 @@ public class RealDrawing extends JPanel{
   			@Override
       		public void mouseClicked(MouseEvent e) {
       			if (startButton.contains(e.getPoint())) {
-      		        going = true;
-      		        iteration(grid, f);
+      				if (looper == null) {
+      					looper = new Looper(grid, f);
+      					Thread t = new Thread(looper);
+      					t.start();
+      				}
+      		  //     going.set(true);
+      		  //     iteration(grid, f);
       			}
       		}
 
@@ -300,8 +310,8 @@ public class RealDrawing extends JPanel{
     			@Override
         		public void mouseClicked(MouseEvent e) {
         			if (startButton.contains(e.getPoint())) {
-        		        going = false;
-        		        first = true;
+        		        looper.stop();
+        		        looper = null;
         			}
         		}
 
@@ -347,21 +357,19 @@ public class RealDrawing extends JPanel{
 	}
 	
 	static void iteration(Buttons[][] grid, JFrame f) {
-		Boolean goes = going;
 		System.out.println("In iteration");
-		if (first) {
+		if (first.get()) {
 			System.out.println("In first");
     		  iterateNoDelay(grid, f);
-    		  first = false;
+    		  first.set(false);
     	  } 
-		while(goes) {
+		while(going.get()) {
 		  System.out.println("In goes");
       	  iterate(grid, f);
-      	  goes = going;
         }
 	}
 	
-	static void iterateNoDelay(Buttons[][] hexGrid, JFrame f) {
+	public static void iterateNoDelay(Buttons[][] hexGrid, JFrame f) {
 		int size = hexGrid.length;
 		boolean[][] newTurnedOn = new boolean[size][size];
 		for(int i = 0; i < size; i++) {
@@ -437,13 +445,8 @@ public class RealDrawing extends JPanel{
 		f.repaint();
 	}
 
-	static void iterate(Buttons[][] hexGrid, JFrame f) {
-		try{
-			Thread.sleep(1000);
-			//System.out.println("sleep");
-			}catch(InterruptedException ex) {
-				System.out.println("no");
-			}
+	public static void iterate(Buttons[][] hexGrid, JFrame f) {
+		
 		int size = hexGrid.length;
 		boolean[][] newTurnedOn = new boolean[size][size];
 		for(int i = 0; i < size; i++) {
@@ -517,5 +520,11 @@ public class RealDrawing extends JPanel{
 		//	}
 		//}
 		f.repaint();
+		try{
+			Thread.sleep(1000);
+			//System.out.println("sleep");
+			}catch(InterruptedException ex) {
+				System.out.println("no");
+			}
 	}
 }
