@@ -1,7 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,7 +12,6 @@ public class Buttons extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel panel;
 	private Hexagon hex;
 	private Color thisColor = Color.white;
 	private Point center;
@@ -250,6 +246,7 @@ public class Buttons extends JPanel{
    //     p.setLayout(null);
    //     p.setSize(500,500);
     //    p.setBackground(Color.blue);
+        f.setBackground(Color.blue);
         f.setTitle("A hexagonal button");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Buttons newbutton = new Buttons(120,120,50);
@@ -261,6 +258,7 @@ public class Buttons extends JPanel{
 			public void mouseClicked(MouseEvent e) {
 				if (newbutton.getHex().contains(e.getPoint())) {
 					newbutton.toggle();
+					System.out.println("newbutton: " + newbutton.getBounds());
 					f.repaint();
 				}
 				
@@ -294,6 +292,7 @@ public class Buttons extends JPanel{
 			public void mouseClicked(MouseEvent e) {
 				if (newbutton1.getHex().contains(e.getPoint())) {
 					newbutton1.toggle();
+					System.out.println("newbutton1: " + newbutton1.getBounds());
 					f.repaint();
 				}
 				
