@@ -1,26 +1,24 @@
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
 public class RealDrawing extends JPanel{
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static int size = 50;
     private static int radius = 10;
 	private Buttons[][] hexGrid = new Buttons[size][size]; //FIRST ENTRY X POS, SECOND ENTRY Y POS
-	private static int i;
-	private static int j;
-	public static AtomicBoolean going;
-	public static AtomicBoolean first;
 	private static Looper looper;
-//	private static Buttons button1;
+	private static int speed;
 	
 	public RealDrawing(){
 		makeHexGrid(new Point(500,500), size, radius, 0);
@@ -109,7 +107,6 @@ public class RealDrawing extends JPanel{
     		public void mouseClicked(MouseEvent e) {
     			if (button1.getHex().contains(e.getPoint())) {
     				button1.toggle();
-    				System.out.println("Button is clicked at " + button1.getBounds());
     				f.repaint();
     			}
     		}
@@ -178,10 +175,6 @@ public class RealDrawing extends JPanel{
                 //System.out.println((xLbl+half)+","+(yLbl+half));
             }
         }
-          
-//        f.add(grid[9][9]);
-//        f.add(grid[8][8]);
-//        f.add(grid[8][9]);
         
         
           JButton nextButton = new JButton();
@@ -196,43 +189,48 @@ public class RealDrawing extends JPanel{
           endButton.setBounds((int)origin.getX() + 30, maxY + 30, 40, 20);
           endButton.setText("End");
           
+          JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, 1, 10, 1);
+          
+          speedSlider.setMajorTickSpacing(10);
+          speedSlider.setMinorTickSpacing(1);
+          speedSlider.setLabelTable(speedSlider.createStandardLabels(1));
+          speedSlider.setPaintTicks(true);
+          speedSlider.setPaintLabels(true);
+          
+          speedSlider.addChangeListener(new ChangeListener() { 
+        	  @Override
+        	    public void stateChanged(ChangeEvent e) {
+        	        JSlider source = (JSlider)e.getSource();
+        	        if (!source.getValueIsAdjusting()) {
+        	            speed = (int)source.getValue();
+        	        }
+        	    }
+        	  
+          });
+          
+          speedSlider.setBounds(1100, 60, 300,40);
+          
+          JLabel sliderLabel = new JLabel("Speed");
+          sliderLabel.setBounds(1230,30,100,30);
+          
+          JButton bigHexButton = new JButton();
+          bigHexButton.setBounds(100, 100, 150, 30);
+          bigHexButton.setText("Big Hexagon");
+          
+          JButton clearButton = new JButton();
+          clearButton.setBounds(100,50,150,30);
+          clearButton.setText("Clear");
+          
           f.add(nextButton);
           f.add(startButton);
           f.add(endButton);
-          
-          going = new AtomicBoolean(false);
-          first = new AtomicBoolean(true);
+          f.add(speedSlider);
+          f.add(sliderLabel);
+          f.add(bigHexButton);
+          f.add(clearButton);
           
           f.setLocationRelativeTo(null);
           f.setVisible(true);
-       // Point origin = new Point(p.getWidth(),p.getHeight());
-       // Hexagon[][] grid = p.makeHexGrid(origin, 10, 40, 0);
-        //grid[5][5].toggle();
-        
-        
-    /*    for(int i = 0; i < grid.length; i++) {
-        	for(int j = 0; j < grid[0].length; j++) {
-        		//System.out.print("("+grid[i][j].getCenter().getX()+", "+
-        	//grid[i][j].getCenter().getY()+")");
-        	}
-        	System.out.println();
-        }*/
-        //grid[14][0].toggle();
-        //grid[0][7].toggle();
-        //grid[0][6].toggle();
-     //   grid[7][4].toggle();
-    //    grid[7][5].toggle();
-     //   grid[6][5].toggle();
-     //   i = 7;
-     //   int j = 4;
-        
-      //  grid[i][j-1].toggle();
-     //   grid[i][j+1].toggle();
-      //  grid[i-1][j].toggle();
-     //   grid[i+1][j].toggle();
-     //   grid[i-1][j-1].toggle();
-     //   grid[i+1][j-1].toggle();
-    //    grid[i][j].toggle();
           
           nextButton.addMouseListener(new MouseListener() {
 			@Override
@@ -339,34 +337,98 @@ public class RealDrawing extends JPanel{
         			
         		}
     		});
-          
-     /*     while(going) {
-        	  if (first) {
-        		  iterateNoDelay(grid, f);
-        		  first = false;
-        	  }
-        	  iterate(grid, f);
-          }*/
-          
-          
-       // grid[7][3].toggle();
-       // grid[14][1].toggle();
-       // grid[14][7].toggle();
-        //grid[6][14].toggle();
-        //grid[5][6].toggle();
-	}
-	
-	static void iteration(Buttons[][] grid, JFrame f) {
-		System.out.println("In iteration");
-		if (first.get()) {
-			System.out.println("In first");
-    		  iterateNoDelay(grid, f);
-    		  first.set(false);
-    	  } 
-		while(going.get()) {
-		  System.out.println("In goes");
-      	  iterate(grid, f);
-        }
+          bigHexButton.addMouseListener(new MouseListener() {
+    			@Override
+        		public void mouseClicked(MouseEvent e) {
+        			if (bigHexButton.contains(e.getPoint())) {
+        		        //color in big hexagon
+        				for(int k = 0; k < 11; k++) {
+        		        	grid[3+2*k][24-2*k].toggle();
+        		        }
+        				for(int k = 0; k < 10; k++) {
+        		        	grid[3][26+2*k].toggle();
+        		        }
+        				for(int k = 0; k < 12; k++) {
+        		        	grid[3+2*k][46].toggle();
+        		        }
+        				for(int k = 0; k < 10; k++) {
+        		        	grid[27+2*k][44-2*k].toggle();
+        		        }
+        				for(int k = 0; k < 11; k++) {
+        					grid[47][24-2*k].toggle();
+        				}
+        				for(int k = 0; k < 12; k++) {
+        					grid[25+2*k][2].toggle();
+        				}
+        				//grid[5][24].toggle();
+        				//grid[3][24].toggle();
+        				f.repaint();
+        			}
+        		}
+
+       			@Override
+       			public void mousePressed(MouseEvent e) {
+       				// TODO Auto-generated method stub
+       				
+       			}
+
+        		@Override
+        		public void mouseReleased(MouseEvent e) {
+        			// TODO Auto-generated method stub
+        			
+        		}
+
+        		@Override
+        		public void mouseEntered(MouseEvent e) {
+        			// TODO Auto-generated method stub
+        			
+        		}
+
+        		@Override
+        		public void mouseExited(MouseEvent e) {
+        			// TODO Auto-generated method stub
+        			
+        		}
+    		});
+            clearButton.addMouseListener(new MouseListener() {
+    			@Override
+        		public void mouseClicked(MouseEvent e) {
+        			if (clearButton.contains(e.getPoint())) {
+        		        for(int m = 0; m < size; m++) {
+        		        	for(int n = 0; n < size; n++) {
+        		        		if(grid[m][n]!=null&&grid[m][n].isOn()) {
+        		        			grid[m][n].toggle();
+        		        		}
+        		        	}
+        		        }
+        		        f.repaint();
+        			}
+        		}
+
+       			@Override
+       			public void mousePressed(MouseEvent e) {
+       				// TODO Auto-generated method stub
+       				
+       			}
+
+        		@Override
+        		public void mouseReleased(MouseEvent e) {
+        			// TODO Auto-generated method stub
+        			
+        		}
+
+        		@Override
+        		public void mouseEntered(MouseEvent e) {
+        			// TODO Auto-generated method stub
+        			
+        		}
+
+        		@Override
+        		public void mouseExited(MouseEvent e) {
+        			// TODO Auto-generated method stub
+        			
+        		}
+    		});
 	}
 	
 	public static void iterateNoDelay(Buttons[][] hexGrid, JFrame f) {
@@ -396,12 +458,13 @@ public class RealDrawing extends JPanel{
 	            	if(hexGrid[i+1][j] != null && hexGrid[i+1][j].isOn()) {
 	            		count++;
 		            }
-	            	if(hexGrid[i-1][j-1] != null && hexGrid[i-1][j-1].isOn()) {
+	            	if(hexGrid[i-1][j+1] != null && hexGrid[i-1][j+1].isOn()) {
 	            		count++;
 	            	}
-	            	if(hexGrid[i+1][j+1] != null && hexGrid[i+1][j+1].isOn()) {
+	            	if(hexGrid[i+1][j-1] != null && hexGrid[i+1][j-1].isOn()) {
 	            		count++;
 	            	}
+	            	
 	            	//rules implemented below
 	            	//System.out.println(count);
 	            	if(hexGrid[i][j].isOn()) {
@@ -432,16 +495,6 @@ public class RealDrawing extends JPanel{
 				}
 			}
 		}
-		
-		//color hexagons here:
-		//
-		//for(int i = 0; i < 10; i++) {
-		//	for(int j = 0; j < 10; j++) {
-		//		if(hexGrid[i][j].isOn()) {
-		//			System.out.println("Hexagon at "+i+", "+j+" is on");
-		//		}
-		//	}
-		//}
 		f.repaint();
 	}
 
@@ -473,10 +526,10 @@ public class RealDrawing extends JPanel{
 	            	if(hexGrid[i+1][j] != null && hexGrid[i+1][j].isOn()) {
 	            		count++;
 		            }
-	            	if(hexGrid[i-1][j-1] != null && hexGrid[i-1][j-1].isOn()) {
+	            	if(hexGrid[i-1][j+1] != null && hexGrid[i-1][j+1].isOn()) {
 	            		count++;
 	            	}
-	            	if(hexGrid[i+1][j+1] != null && hexGrid[i+1][j+1].isOn()) {
+	            	if(hexGrid[i+1][j-1] != null && hexGrid[i+1][j-1].isOn()) {
 	            		count++;
 	            	}
 	            	//rules implemented below
@@ -509,19 +562,9 @@ public class RealDrawing extends JPanel{
 				}
 			}
 		}
-		
-		//color hexagons here:
-		//
-		//for(int i = 0; i < 10; i++) {
-		//	for(int j = 0; j < 10; j++) {
-		//		if(hexGrid[i][j].isOn()) {
-		//			System.out.println("Hexagon at "+i+", "+j+" is on");
-		//		}
-		//	}
-		//}
 		f.repaint();
 		try{
-			Thread.sleep(1000);
+			Thread.sleep(100*(11 - speed));
 			//System.out.println("sleep");
 			}catch(InterruptedException ex) {
 				System.out.println("no");
