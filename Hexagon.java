@@ -1,7 +1,7 @@
 import java.awt.*;
 
 public class Hexagon extends Polygon {
-
+	//This class creates the Hexagons that are drawn on top of the JPanels in the Buttons class. It was largely copied from the Internet.
     private static final long serialVersionUID = 1L;
 
     public static final int SIDES = 6;
@@ -11,7 +11,7 @@ public class Hexagon extends Polygon {
     private int radius;
     private int rotation = 90;
 
-    private boolean on = false; //on = yellow, off = white
+    private boolean on = false; //on = black, off = white
     public Hexagon(Point center, int radius) {
         npoints = SIDES;
         xpoints = new int[SIDES];
@@ -22,6 +22,8 @@ public class Hexagon extends Polygon {
 
         updatePoints();
     }
+    
+    //Self-explanatory functions
     public boolean isOn() {
     	return on;
     }
@@ -42,6 +44,7 @@ public class Hexagon extends Polygon {
         updatePoints();
     }
 
+    //Rotation sets the orientation of the hexagons. For us this is always one orientation so we don't bother with this.
     public int getRotation() {
         return rotation;
     }
@@ -67,14 +70,16 @@ public class Hexagon extends Polygon {
     private double findAngle(double fraction) {
         return fraction * Math.PI * 2 + Math.toRadians((rotation + 180) % 360);
     }
-
+    
+    //Finds a vertex from an angle around the center.
     private Point findPoint(double angle) {
         int x = (int) (center.x + Math.cos(angle) * radius);
         int y = (int) (center.y + Math.sin(angle) * radius);
 
         return new Point(x, y);
     }
-
+    
+    //Defines the set of the hexagon's vertices
     protected void updatePoints() {
         for (int p = 0; p < SIDES; p++) {
             double angle = findAngle((double) p / SIDES);
@@ -84,7 +89,8 @@ public class Hexagon extends Polygon {
             points[p] = point;
         }
     }
-
+    
+    //Draws the hexagon.
     public void draw(Graphics2D g, int x, int y, int lineThickness, int colorValue, boolean filled) {
         // Store before changing.
         Stroke tmpS = g.getStroke();
