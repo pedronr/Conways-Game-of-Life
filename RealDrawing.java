@@ -1,7 +1,9 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
@@ -125,8 +127,10 @@ public class RealDrawing extends JPanel{
 
     		@Override
     		public void mouseEntered(MouseEvent e) {
-    			// TODO Auto-generated method stub
-    			
+    			if (button1.getHex().contains(e.getPoint()) && e.isAltDown()) {
+    				button1.toggle();
+    				f.repaint();
+    			}
     		}
 
     		@Override
@@ -151,13 +155,14 @@ public class RealDrawing extends JPanel{
         JPanel p = new JPanel();
         f.setContentPane(p);
         f.setLayout(null);
-        f.setSize(1500,1500);   
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        f.setSize(screenSize.width, screenSize.height);
         p.setLayout(null);
         p.setSize(500,500);
         p.setBackground(new Color(0x006606));
          f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Point origin = new Point((int)f.getSize().getHeight()/2,(int)f.getSize().getWidth()/3);
+        Point origin = new Point((int)f.getSize().getWidth() / 2,(int)f.getSize().getHeight() / 2 - 30);
         int maxY = 0;
         for (int row = 0; row < size; row++) {
             int cols = size - java.lang.Math.abs(row - half);
@@ -208,10 +213,10 @@ public class RealDrawing extends JPanel{
         	  
           });
           
-          speedSlider.setBounds(1100, 60, 300,40);
+          speedSlider.setBounds((int)f.getSize().getWidth() - 400, 60, 300,40);
           
           JLabel sliderLabel = new JLabel("Speed");
-          sliderLabel.setBounds(1230,30,100,30);
+          sliderLabel.setBounds((int)f.getSize().getWidth() - 275,30,100,30);
           
           JButton bigHexButton = new JButton();
           bigHexButton.setBounds(100, 100, 150, 30);
