@@ -17,6 +17,8 @@ public class Buttons extends JPanel{
 	private Point center;
 	private int radius;
 	
+	//There are four constructors -- a no-argument constructor that uses default values, one that takes in a point for the center and a radius,
+	//one that takes in an x and y value for the center and a radius, and one that takes in a Hexagon type object.
 	public Buttons() {
 		setOpaque(true);
 		radius = 40;
@@ -24,45 +26,7 @@ public class Buttons extends JPanel{
 		hex = new Hexagon(center,radius);
 		setPreferredSize(new Dimension(100, 100));
 		this.setBounds((int)center.getX() - radius,(int)center.getY()-radius,2*radius,2*radius);
-	//	add(panel);
-		
-/*		addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (thisColor.equals(Color.black) && hex.contains(e.getPoint())) {
-					System.out.println("Hex clicked");
-					setColoring(Color.white);
-				}
-				else if (thisColor.equals(Color.white) && hex.contains(e.getPoint())) {
-					System.out.println("Hex clicked");
-					setColoring(Color.black);
-				}
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		}); */
+	
 	}
 	
 	public Buttons(Point p, int r) {
@@ -71,43 +35,7 @@ public class Buttons extends JPanel{
 		radius = r;
 		this.setBounds((int)p.getX()-r,(int)p.getY()-r,2*r,2*r);
 		hex = new Hexagon(center,radius);
-	//	add(panel);
-		
-	/*	addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (thisColor.equals(Color.black) && hex.contains(e.getPoint())) {
-					setColoring(Color.white);
-				}
-				else if (thisColor.equals(Color.white) && hex.contains(e.getPoint())) {
-					setColoring(Color.black);
-				}
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		}); */
+	
 	}
 	
 	public Buttons(int x, int y, int r) {
@@ -117,59 +45,23 @@ public class Buttons extends JPanel{
 		hex = new Hexagon(center,radius);
 		setPreferredSize(new Dimension(100, 100));
 		this.setBounds(x-r,y-r,2*r,2*r);
-	//	add(panel);
-		
-	/*	addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (thisColor.equals(Color.black) && hex.contains(e.getPoint())) {
-					setColoring(Color.white);
-				}
-				else if (thisColor.equals(Color.white) && hex.contains(e.getPoint())) {
-					setColoring(Color.black);
-				}
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		}); */
+	
 	}
 	
 	public Buttons (Hexagon hexag) {
 		setOpaque(true);
-	//	panel = new JPanel();
 		hex = hexag;
 		radius = hexag.getRadius();
 		center = new Point (radius, radius);
 		this.setBounds((int)hexag.getCenter().getX()-radius, (int)hexag.getCenter().getY()-radius,2*radius,2*radius);
-	//	add(panel);
 	}
 	
+	//Checks if a Buttons object is on
 	public Boolean isOn() {
 		return this.thisColor.equals(Color.black);
 	}
 	
+	//This method is not used.
 	public void draw(Graphics2D g, int x, int y, int lineThickness, int colorValue, boolean filled) {
         // Store before changing.
         Stroke tmpS = g.getStroke();
@@ -184,6 +76,8 @@ public class Buttons extends JPanel{
         g.setColor(tmpC);
         g.setStroke(tmpS);
     }
+	
+	//Many functions for setting and getting private instance variables
 	
 	public Hexagon getHex() {
 		return hex;
@@ -213,6 +107,8 @@ public class Buttons extends JPanel{
 		thisColor = choice;
 	}
 	
+	
+	//toggles color of Buttons object
 	public void toggle() {
 		if (isOn()) {
 			this.setColoring(Color.white);
@@ -229,23 +125,20 @@ public class Buttons extends JPanel{
 		return thisColor.toString();
 	}
 	
+	// paintComponent draws a hexagon instead of a square when the Buttons object is added.
 	@Override
 	protected void paintComponent(Graphics g) {
-	//	super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(thisColor);
 		g2.fill(hex);
 	}
-
+	
+	
+	//not used
 	public static void main(String[] args) {
 		JFrame f = new JFrame();
-	//	JPanel p = new JPanel();
-	//	f.setContentPane(p);
 		f.setLayout(null);
         f.setSize(500,500);
-   //     p.setLayout(null);
-   //     p.setSize(500,500);
-    //    p.setBackground(Color.blue);
         f.setBackground(Color.blue);
         f.setTitle("A hexagonal button");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
