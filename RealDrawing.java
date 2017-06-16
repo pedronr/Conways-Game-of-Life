@@ -20,7 +20,7 @@ public class RealDrawing extends JPanel{
     private static int radius = 10;
 	private Buttons[][] hexGrid = new Buttons[size][size]; //FIRST ENTRY X POS, SECOND ENTRY Y POS
 	private static Looper looper;
-	private static int speed;
+	private static int speed = 1;
 	
 	public RealDrawing(){
 		makeHexGrid(new Point(500,500), size, radius, 0);
@@ -154,15 +154,15 @@ public class RealDrawing extends JPanel{
         //Creating the next, start, and end buttons, as well as the slider to adjust the speed of the animation.
         
           JButton nextButton = new JButton();
-          nextButton.setBounds((int)origin.getX() - 70, maxY + 30, 40, 20);
+          nextButton.setBounds((int)origin.getX() - size * radius * 13 / 10, maxY  - 250, 40, 20);
           nextButton.setText("Next");
           
           JButton startButton = new JButton();
-          startButton.setBounds((int)origin.getX() - 20, maxY + 30, 40, 20);
+          startButton.setBounds((int)origin.getX() - size * radius * 13 / 10, maxY  - 220, 40, 20);
           startButton.setText("Start");
           
           JButton endButton = new JButton();
-          endButton.setBounds((int)origin.getX() + 30, maxY + 30, 40, 20);
+          endButton.setBounds((int)origin.getX() - size * radius * 13 / 10, maxY  - 190, 40, 20);
           endButton.setText("End");
           
           JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, 1, 10, 1);
@@ -495,8 +495,11 @@ public class RealDrawing extends JPanel{
 	            	//Rules implemented below
 	            	if(hexGrid[i][j].isOn()) {
 	            		
-	            		if(!(count==2)&&!(count==3)) {
+	            		if(/*(count!=2)&&*/(count!=3)) {
 	            			newTurnedOn[i][j]=false;
+	            		}
+	            		else if (/*(count == 2) || */(count == 3)) {
+	            			newTurnedOn[i][j] = true;
 	            		}
 	            	}
 	            	else if(!hexGrid[i][j].isOn()) {
@@ -557,8 +560,11 @@ public class RealDrawing extends JPanel{
 	            	//Rules implemented below
 	            	if(hexGrid[i][j].isOn()) {
 	            		
-	            		if(!(count==2)&&!(count==3)) {
+	            		if(/*(count!=2)&&*/(count!=3)) {
 	            			newTurnedOn[i][j]=false;
+	            		}
+	            		else if (/*(count == 2) || */(count == 3)) {
+	            			newTurnedOn[i][j] = true;
 	            		}
 	            	}
 	            	else if(!hexGrid[i][j].isOn()) {
