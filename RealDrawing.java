@@ -16,7 +16,7 @@ public class RealDrawing extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static int size = 50;
+	private static int size = 60;
     private static int radius = 10;
 	private Buttons[][] hexGrid = new Buttons[size][size]; //FIRST ENTRY X POS, SECOND ENTRY Y POS
 	private static Looper looper;
@@ -154,15 +154,15 @@ public class RealDrawing extends JPanel{
         //Creating the next, start, and end buttons, as well as the slider to adjust the speed of the animation.
         
           JButton nextButton = new JButton();
-          nextButton.setBounds((int)origin.getX() - size * radius * 13 / 10, maxY  - 250, 40, 20);
+          nextButton.setBounds((int)origin.getX() - size * radius * 9 / 10, (int)origin.getY() + size * radius * 1/2 - 40, 40, 20);
           nextButton.setText("Next");
           
           JButton startButton = new JButton();
-          startButton.setBounds((int)origin.getX() - size * radius * 13 / 10, maxY  - 220, 40, 20);
+          startButton.setBounds((int)origin.getX() - size * radius * 9 / 10, (int)origin.getY() + size * radius * 1/2 - 10, 40, 20);
           startButton.setText("Start");
           
           JButton endButton = new JButton();
-          endButton.setBounds((int)origin.getX() - size * radius * 13 / 10, maxY  - 190, 40, 20);
+          endButton.setBounds((int)origin.getX() - size * radius * 9 / 10, (int)origin.getY() + size * radius * 1/2 + 20, 40, 20);
           endButton.setText("End");
           
           JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, 1, 10, 1);
@@ -334,26 +334,26 @@ public class RealDrawing extends JPanel{
         		public void mouseClicked(MouseEvent e) {
         			if (bigHexButton.contains(e.getPoint())) {
         		        //color in big hexagon
-        				for(int k = 0; k < 11; k++) {
-        		        	grid[3+2*k][24-2*k].toggle();
+        				for(int k = 0; k < size / 4 - 1; k++) {
+        		        	grid[3+2*k][size / 2 - 1 -2*k].toggle();
         		        }
-        				for(int k = 0; k < 10; k++) {
-        		        	grid[3][26+2*k].toggle();
+        				for(int k = 0; k < size / 4 - 2; k++) {
+        		        	grid[3][size / 2 + 1 +2*k].toggle();
         		        }
-        				for(int k = 0; k < 12; k++) {
-        		        	grid[3+2*k][46].toggle();
+        				for(int k = 0; k < size / 4; k++) {
+        		        	grid[3+2*k][size - 4].toggle();
         		        }
-        				for(int k = 0; k < 10; k++) {
-        		        	grid[27+2*k][44-2*k].toggle();
+        				for(int k = 0; k < size / 4 - 2; k++) {
+        		        	grid[size / 2 + 2+2*k][size - 6 -2*k].toggle();
         		        }
-        				for(int k = 0; k < 11; k++) {
-        					grid[47][24-2*k].toggle();
+        				for(int k = 0; k < size / 4 - 1; k++) {
+        					grid[size - 3][size / 2 - 1-2*k].toggle();
         				}
-        				for(int k = 0; k < 12; k++) {
-        					grid[25+2*k][2].toggle();
+        				for(int k = 0; k < size / 4; k++) {
+        					grid[size / 2+2*k][2].toggle();
         				}
         				//grid[5][24].toggle();
-        				//grid[3][24].toggle();
+        				//grid[5][23].toggle();
         				f.repaint();
         			}
         		}
@@ -386,8 +386,8 @@ public class RealDrawing extends JPanel{
   			@Override
       		public void mouseClicked(MouseEvent e) {
       			if (lineButton.contains(e.getPoint())) {
-      				for(int k = 0; k < 50; k++) {
-      					grid[k][25].toggle();
+      				for(int k = 0; k < size; k++) {
+      					grid[k][size / 2].toggle();
       				}
       				f.repaint();
       			}
